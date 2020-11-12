@@ -20,7 +20,7 @@ ActiveRecord::Schema.define(version: 20160322134147) do
     t.integer "unsubscriber_id"
     t.integer "conversation_id"
     t.index ["conversation_id"], name: "index_mailboxer_conversation_opt_outs_on_conversation_id"
-    t.index ["unsubscriber_id", "unsubscriber_type"], name: "conversation_opt_outs_on_unsubscriber_id_type"
+    t.index ["unsubscriber_id", "unsubscriber_type"], name: "index_mailboxer_on_unsubscriber_id_type"
   end
 
   create_table "mailboxer_conversations", id: :serial, force: :cascade do |t|
@@ -46,7 +46,7 @@ ActiveRecord::Schema.define(version: 20160322134147) do
     t.boolean "global", default: false
     t.datetime "expires"
     t.index ["conversation_id"], name: "index_mailboxer_notifications_on_conversation_id"
-    t.index ["notified_object_id", "notified_object_type"], name: "notifications_on_notified_object_id_and_type"
+    t.index ["notified_object_id", "notified_object_type"], name: "index_mailboxer_on_notified_object_id_and_type"
     t.index ["sender_id", "sender_type"], name: "index_mailboxer_notifications_on_sender_id_and_sender_type"
     t.index ["type"], name: "index_mailboxer_notifications_on_type"
   end
@@ -65,7 +65,7 @@ ActiveRecord::Schema.define(version: 20160322134147) do
     t.index ["receiver_id", "receiver_type"], name: "index_mailboxer_receipts_on_receiver_id_and_receiver_type"
   end
 
-  create_table "users", force: :cascade do |t|
+  create_table "users", id: :serial, force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"

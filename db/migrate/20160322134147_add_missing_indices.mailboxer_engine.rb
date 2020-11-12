@@ -13,8 +13,7 @@ class AddMissingIndices < ActiveRecord::Migration[4.2]
     # We'll explicitly specify its name, as the auto-generated name is too long and exceeds 63
     # characters limitation.
     add_index :mailboxer_notifications, [:notified_object_id, :notified_object_type],
-              name: 'notifications_on_notified_object_id_and_type'
-
+              name: 'index_mailboxer_notifications_on_notified_object_id_and_type'
     add_index :mailboxer_receipts, [:receiver_id, :receiver_type]
   end
 end
