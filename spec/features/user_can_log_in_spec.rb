@@ -1,22 +1,37 @@
 feature 'User can log in' do
-  context 'on log in form' do
+  let(:user) { FactoryBot.create(:user) }
+
+  context 'successful log in' do
     before do
       visit user_session_path
-      click_on 'Log in'
-    end
-  
-    it 'displays the log in form' do
-    expect(page).to have_content 'Log in'
-    expect(page).to have_field 'Email'
-    expect(page).to have_field 'Password'
+      click_on 'Login'  
     end
 
-    it 'display options for sign up and forget password' do
-      expect(page).to have_link 'Sign up', href: '/users/sign_up'
-      expect(page).to have_link 'Forgot your password?', href: '/users/password/new'
+    it 'user can log in successfully' do
+      fill_in 'Email', with: user.email
+      fill_in 'Password', with: user.password
+      click_button 'Log in'
+      expect(page).to have_content 'Signed in successfully'
+    end
+  end
+
+  context 'unsuccessful log in' do
+    before do
+      visit user_session_path
+      click_on 'Login'  
+    end
+    
+    it 'displays error message if email is invalid' do
+      fill_in 'Email', with: ' '
+      fill_in 'Password', with: user.password
+      click_button 'Log in'
+      expect(page).to have_content 'Invalid Email or password'
     end
 
-    it 'displays error message if no/wrong information completed' do
+    it 'displays error message if password is incorrect' do
+      fill_in 'Email', with: user.name
+      fill_in 'Password', with: ' '
+      click_button 'Log in'
       expect(page).to have_content 'Invalid Email or password'
     end
   end
